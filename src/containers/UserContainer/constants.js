@@ -1,0 +1,1 @@
+export const FIRST_TIME_STARTING_APP = 'GlobalContainer/FIRST_TIME_STARTING_APP';
