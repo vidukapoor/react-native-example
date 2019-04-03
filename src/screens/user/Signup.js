@@ -2,7 +2,7 @@
  * @author vishwadeep.kapoor
  * @Date: 2019-03-31 18:20:48
  * @Last Modified by: vishwadeep
- * @Last Modified time: 2019-04-02 10:01:50
+ * @Last Modified time: 2019-04-03 10:50:27
  */
 import React, { PureComponent } from 'react';
 import { shape } from 'prop-types';
@@ -68,10 +68,18 @@ class SignupWrapper extends PureComponent {
               style={{ borderBottomWidth: 1, borderBottomColor: '#CCCCCC', marginBottom: 50 }}
             />
             <TouchableOpacity
-              style={{ backgroundColor: '#193582', borderRadius: 23, height: 30, width: '22%', marginLeft: '40%', marginBottom: 30 }}
+              style={{
+                backgroundColor: '#193582',
+                borderRadius: 23,
+                padding: 4,
+                width: '22%',
+                marginLeft: '40%',
+                marginBottom: 30,
+                marginTop: 5,
+              }}
               onPress={this.signupClicked}
             >
-              <Text style={{ textAlign: 'center', color: '#fff', marginTop: 5, fontSize: 13 }}>Signup</Text>
+              <Text style={{ textAlign: 'center', color: '#fff', fontSize: 13 }}>Signup</Text>
             </TouchableOpacity>
           </View>
           <View style={{ marginLeft: '25%', flexDirection: 'row' }}>
