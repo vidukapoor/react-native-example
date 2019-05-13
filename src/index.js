@@ -27,21 +27,21 @@ class Kernel extends React.Component {
     if (store.getState().nav.index !== 0) {
       store.dispatch(NavigationActions.back());
       return true;
-    } else if (store.getState().nav.routes[0].index !== 1) {
-      store.dispatch(NavigationActions.navigate({routeName: 'Login'}));
-      // store.dispatch(NavigationActions.navigate({routeName: 'Start'}));
-      return true;
     }
+    // else if (store.getState().nav.routes[0].index !== 1) {
+    //   store.dispatch(NavigationActions.navigate({routeName: 'Login'}));
+    //   store.dispatch(NavigationActions.navigate({routeName: 'Start'}));
+    //   return true;
+    // }
     return false;
   };
 
 
   render() {
-
     return (
-        <Provider store={store}>
-            <AppNavigator/>
-        </Provider>
+      <Provider store={store}>
+        <AppNavigator />
+      </Provider>
     );
   }
 }

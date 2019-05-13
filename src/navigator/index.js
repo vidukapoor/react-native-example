@@ -2,10 +2,11 @@ import React from 'react';
 import { Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addNavigationHelpers, DrawerNavigator } from 'react-navigation';
+import { addNavigationHelpers, DrawerNavigator, TabNavigator } from 'react-navigation';
 import screens from '../screens';
 
-export const AppNavigator = DrawerNavigator(screens,
+// export const AppNavigator = DrawerNavigator(screens,
+export const AppNavigator = TabNavigator(screens,
   {
     drawerWidth: 200,
     mode: Platform.OS === 'ios' ? 'modal' : 'card',

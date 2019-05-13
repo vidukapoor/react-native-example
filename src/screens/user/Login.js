@@ -2,7 +2,7 @@
  * @author vishwadeep.kapoor
  * @Date: 2019-03-31 18:20:48
  * @Last Modified by: vishwadeep
- * @Last Modified time: 2019-04-03 10:48:57
+ * @Last Modified time: 2019-04-11 22:53:03
  */
 import React, { PureComponent } from 'react';
 import { shape } from 'prop-types';
@@ -19,7 +19,7 @@ const TextInput = styled.TextInput`
 class LoginWrapper extends PureComponent {
   loginClicked = () => {
     console.log('login is clicked');
-    this.props.navigation.navigate('Home');
+    this.props.navigation.navigate('HomeIndex');
   }
   toSignupScreen = () => {
     this.props.navigation.navigate('Signup');

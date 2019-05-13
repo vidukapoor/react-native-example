@@ -2,11 +2,13 @@
  * @author vishwadeep.kapoor
  * @Date: 2019-03-31 18:20:48
  * @Last Modified by: vishwadeep
- * @Last Modified time: 2019-04-05 00:22:25
+ * @Last Modified time: 2019-04-16 21:12:38
  */
 import React, { PureComponent } from 'react';
+import { shape } from 'prop-types';
 import styled from 'styled-components/native';
-import { Text, View, TouchableOpacity, Picker } from 'react-native';
+import { Text, View, TouchableOpacity, Modal, TouchableHighlight, Alert } from 'react-native';
+import { HOME_LIST_DATA } from './constant';
 
 const Image = styled.Image`
     display: flex;
@@ -19,51 +21,117 @@ class HomeWrapper extends PureComponent {
     this.state = {
       language: '',
       language1: '',
+      isShowModal: true,
+      selectedItem: -1,
     };
+    this.selectedItemList = this.selectedItemList.bind(this);
   }
+
+  setModalVisible() {
+    this.setState({ isShowModal: false });
+  }
+
   logoutClicked = () => {
     console.log('logoutClicked is clicked');
     this.props.navigation.navigate('Login');
   }
   sendClicked = () => {
-    console.log('SendPaymentsClicked is clicked');
     this.props.navigation.navigate('SendPayments');
   }
+
+  selectedItemList = (selectedItem) => {
+    this.setState({ selectedItem });
+  }
+
+  redirectSubMenu = (screen) => {
+    console.log('.........', screen);
+    this.props.navigation.navigate(screen);
+  }
+
+  renderPaymentSuccessModal = () => (
+    <View style={{
+      marginLeft: '5%',
+      marginRight: '5%',
+      marginTop: '40%',
+      backgroundColor: '#FFFFFF',
+      height: 200,
+      borderRadius: 10,
+    }}
+    >
+      <View style={{ padding: '18%' }}>
+        <Text style={{ color: '#18337F', fontSize: 20 }}>PAYMENT SUCCESSFULL</Text>
+        <Text style={{ color: '#5A5A5A', fontSize: 12, marginTop: 17 }}>Payment is successfull of 10,000 </Text>
+      </View>
+      <View style={{
+        position: 'absolute',
+        bottom: 0,
+        height: 50,
+        backgroundColor: '#EDEDED',
+        width: '100%',
+        borderRadius: 3.19,
+        alignItems: 'center',
+      }}
+      >
+        <TouchableHighlight
+          onPress={() => {
+            this.setModalVisible(!this.state.isShowModal);
+          }}
+        >
+          <Text style={{ marginTop: 10, color: '#141E5E', fontSize: 13 }}>OK</Text>
+        </TouchableHighlight>
+      </View>
+    </View>
+  )
+
+
   /**
    * @todo for IOS this date picker will be different
    * @see https://codeburst.io/linear-gradient-for-border-color-in-react-native-5bcab3eea1c9
    */
   render() {
+    const { navigation: { state: {
+      params: { data: { isFromReview = false } = {} } = {},
+    } } } = this.props;
+    const { isShowModal, selectedItem } = this.state;
+    console.log('SendPaymentsClicked render.....', this.props, isShowModal && isFromReview, isShowModal, isFromReview);
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: '#193582' }}>
         <View style={{ marginLeft: '40%', marginTop: '20%' }}>
-          <Text>
+          <Modal
+            animationType="slide"
+            transparent
+            visible={isShowModal && isFromReview}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+            }}
+          >
+            {this.renderPaymentSuccessModal()}
+          </Modal>
+
+          <Text style={{ color: '#fff' }}>
             Image
           </Text>
         </View>
         <View style={{ padding: 40 }}>
-          <Picker
-            label="manage accounts"
-            selectedValue={this.state.language}
-            onValueChange={(itemValue, itemIndex) =>
-              this.setState({ language: itemValue })
-            }
-            // mode="dropdown"
-          >
-            <Picker.Item label="Account1" value="Account1" />
-            <Picker.Item label="Account2" value="Account2" />
-          </Picker>
-          <Picker
-            label="Manage Services"
-            selectedValue={this.state.language1}
-            onValueChange={(itemValue, itemIndex) =>
-              this.setState({ language1: itemValue })
-            }
-          // mode="dropdown"
-          >
-            <Picker.Item label="Services1" value="Services1" />
-            <Picker.Item label="Services2" value="Services2" />
-          </Picker>
+          {HOME_LIST_DATA.map(item => (
+            <View key={item.key}>
+              <TouchableOpacity onPress={() => this.selectedItemList(item.key)}>
+                <Text style={{ color: 'red', fontSize: 18 }}>
+                  {item.label}
+                </Text>
+              </TouchableOpacity>
+              {item.key === selectedItem && item.list.map(subItem => (
+                <TouchableOpacity
+                  onPress={() => this.redirectSubMenu(subItem.path)}
+                  key={subItem.key}
+                >
+                  <Text style={{ color: '#fff', fontSize: 15 }}>
+                    {subItem.label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          ))}
         </View>
         <View
           style={{
@@ -78,6 +146,7 @@ class HomeWrapper extends PureComponent {
             fontSize: 14,
             height: 30,
             marginTop: 30,
+            color: '#ffff',
           }}
           >Scan QR code and make payments</Text>
         </View>
@@ -89,7 +158,7 @@ class HomeWrapper extends PureComponent {
         }}
         >
           <View style={{ marginTop: 33, marginBottom: 30, flexDirection: 'row', alignItems: 'center' }}>
-            <TouchableOpacity onPress={this.sendClicked} style={{ marginLeft: 90 }}>
+            <TouchableOpacity onPress={this.sendClicked} style={{ marginLeft: 80 }}>
               <Image source={require('../../assets/logo.png')} />
               <Text style={{ color: '#fff', marginTop: 18 }}>Send Data</Text>
             </TouchableOpacity>
@@ -104,4 +173,7 @@ class HomeWrapper extends PureComponent {
   }
 }
 
+HomeWrapper.propTypes = {
+  navigation: shape({}).isRequired,
+};
 export default HomeWrapper;
